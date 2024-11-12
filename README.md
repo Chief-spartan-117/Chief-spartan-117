@@ -1,4 +1,4 @@
-<h2 align="center">Hi 👋! My name is Sagar Shrestha and I'm a Graphic Designer | Web Designer and Developer.</h2>
+<h2 align="center">Hi 👋! My name is Sagar Shrestha and I'm a Rookie Learner</h2>
 
 ###
 
