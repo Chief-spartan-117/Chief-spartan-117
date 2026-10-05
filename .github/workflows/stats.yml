@@ -35,6 +35,9 @@ jobs:
           STATS_USERNAME: ${{ github.repository_owner }}
           # Optional: hide languages from the languages card, e.g. "Jupyter Notebook,HTML".
           STATS_EXCLUDE_LANGS: ""
+          # Optional: tech to always show on the Tech Stack card, even if it can't be detected
+          # from your repos (ids are devicon names, e.g. "vscode,figma,git,linux").
+          STATS_EXTRA_TECH: "html5,css3,javascript,nodejs,svelte,vscode,figma,express,sass"
         run: node .github/scripts/generate-stats.mjs
 
       - name: Commit cards
