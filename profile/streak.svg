@@ -29,7 +29,7 @@
   <text x="25" y="35" class="title">Contribution Streak</text>
   <text x="775" y="35" class="subtitle" text-anchor="end">days with at least one contribution</text>
   <g class="fade" style="animation-delay: 150ms" transform="translate(133, 0)">
-    <text y="120" class="big" text-anchor="middle">359</text>
+    <text y="120" class="big" text-anchor="middle">361</text>
     <text y="150" class="label" text-anchor="middle">Total Contributions</text>
     <text y="172" class="muted" text-anchor="middle">Jun 8, 2019 – Present</text></g>
   <g class="fade" style="animation-delay: 300ms" transform="translate(400, 0)">
