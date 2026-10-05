@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="350" height="110" viewBox="0 0 350 110" role="img" aria-label="Most Used Languages">
+  <style>
+    .title { font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif; fill: #ff6e96; }
+    .label { font: 600 14px 'Segoe UI', Ubuntu, Sans-Serif; fill: #f8f8f2; }
+    .value { font: 700 14px 'Segoe UI', Ubuntu, Sans-Serif; fill: #f8f8f2; }
+    .small { font: 400 12px 'Segoe UI', Ubuntu, Sans-Serif; fill: #f8f8f2; }
+  </style>
+  <rect x="0.5" y="0.5" rx="4.5" width="349" height="109" fill="#282a36" stroke="#6272a4"/>
+  <text x="25" y="35" class="title">Most Used Languages</text>
+  <mask id="bar"><rect x="0" y="0" width="300" height="8" rx="4" fill="#fff"/></mask>
+  <g mask="url(#bar)" transform="translate(25, 52)"></g>
+  <text x="25" y="90" class="small">No language data yet</text>
+</svg>
