@@ -1,36 +1,86 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="350" height="160" viewBox="0 0 350 160" role="img" aria-label="Most Used Languages">
+<svg xmlns="http://www.w3.org/2000/svg" width="305" height="255" viewBox="0 0 305 255" role="img" aria-label="Most Used Languages">
+  <title>Most Used Languages</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2b2d3a"/>
+      <stop offset="100%" stop-color="#1e1f29"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff79c6"/>
+      <stop offset="100%" stop-color="#bd93f9"/>
+    </linearGradient>
+  </defs>
   <style>
-    .title { font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif; fill: #ff6e96; }
-    .label { font: 600 14px 'Segoe UI', Ubuntu, Sans-Serif; fill: #f8f8f2; }
-    .value { font: 700 14px 'Segoe UI', Ubuntu, Sans-Serif; fill: #f8f8f2; }
-    .small { font: 400 12px 'Segoe UI', Ubuntu, Sans-Serif; fill: #f8f8f2; }
+    text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Sans-Serif; }
+    .title { font-size: 18px; font-weight: 700; fill: url(#accent); }
+    .subtitle { font-size: 12px; fill: #a3a9c7; }
+    .label { font-size: 14px; font-weight: 600; fill: #f8f8f2; }
+    .value { font-size: 14px; font-weight: 700; fill: #f8f8f2; }
+    .small { font-size: 12px; fill: #f8f8f2; }
+    .muted { font-size: 12px; fill: #a3a9c7; }
+    .big { font-size: 28px; font-weight: 700; fill: #f8f8f2; }
+    .fade { animation: fadeIn 0.6s ease-in-out both; }
+    @keyframes fadeIn { from { opacity: 0; } }
+    @keyframes grow { from { stroke-dashoffset: var(--full); } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
   </style>
-  <rect x="0.5" y="0.5" rx="4.5" width="349" height="159" fill="#282a36" stroke="#6272a4"/>
+  <rect x="0.5" y="0.5" rx="10" width="304" height="254" fill="url(#bg)" stroke="#44475a"/>
+  <rect x="25" y="47" width="40" height="3" rx="1.5" fill="url(#accent)"/>
   <text x="25" y="35" class="title">Most Used Languages</text>
-  <mask id="bar"><rect x="0" y="0" width="300" height="8" rx="4" fill="#fff"/></mask>
-  <g mask="url(#bar)" transform="translate(25, 52)"><rect x="0.00" y="0" width="250.78" height="8" fill="#DA5B0B"/><rect x="250.78" y="0" width="15.62" height="8" fill="#f1e05a"/><rect x="266.40" y="0" width="12.56" height="8" fill="#3178c6"/><rect x="278.96" y="0" width="10.73" height="8" fill="#663399"/><rect x="289.69" y="0" width="5.92" height="8" fill="#3572A5"/><rect x="295.61" y="0" width="4.39" height="8" fill="#e34c26"/></g>
-  <g transform="translate(25, 85)">
+  
+  <g class="fade" transform="translate(70, 145)">
+    <g transform="rotate(-90)">
+    <circle r="42" fill="none" stroke="#DA5B0B" stroke-width="14"
+      stroke-dasharray="215.22 48.67" stroke-dashoffset="0.00"/>
+    <circle r="42" fill="none" stroke="#f1e05a" stroke-width="14"
+      stroke-dasharray="13.40 250.49" stroke-dashoffset="-215.22"/>
+    <circle r="42" fill="none" stroke="#3178c6" stroke-width="14"
+      stroke-dasharray="10.78 253.11" stroke-dashoffset="-228.63"/>
+    <circle r="42" fill="none" stroke="#663399" stroke-width="14"
+      stroke-dasharray="9.21 254.69" stroke-dashoffset="-239.41"/>
+    <circle r="42" fill="none" stroke="#3572A5" stroke-width="14"
+      stroke-dasharray="5.08 258.81" stroke-dashoffset="-248.61"/>
+    <circle r="42" fill="none" stroke="#e34c26" stroke-width="14"
+      stroke-dasharray="3.77 260.12" stroke-dashoffset="-253.69"/>
+    <circle r="42" fill="none" stroke="#6272a4" stroke-width="14"
+      stroke-dasharray="6.43 257.46" stroke-dashoffset="-257.46"/>
+    </g>
+    <text y="4" class="value" text-anchor="middle" style="font-size: 20px">11</text>
+    <text y="20" class="muted" text-anchor="middle" style="font-size: 10px">languages</text>
+  </g>
+  <g class="fade" style="animation-delay: 200ms" transform="translate(132, 82)">
     <circle cx="5" cy="-4" r="5" fill="#DA5B0B"/>
-    <text x="15" y="0" class="small">Jupyter Notebook 83.59%</text>
+    <text x="16" y="0" class="small">Jupyter Notebook</text>
+    <text x="150" y="0" class="muted" text-anchor="end">82%</text>
   </g>
-  <g transform="translate(175, 85)">
+  <g class="fade" style="animation-delay: 300ms" transform="translate(132, 105)">
     <circle cx="5" cy="-4" r="5" fill="#f1e05a"/>
-    <text x="15" y="0" class="small">JavaScript 5.21%</text>
+    <text x="16" y="0" class="small">JavaScript</text>
+    <text x="150" y="0" class="muted" text-anchor="end">5.1%</text>
   </g>
-  <g transform="translate(25, 110)">
+  <g class="fade" style="animation-delay: 400ms" transform="translate(132, 128)">
     <circle cx="5" cy="-4" r="5" fill="#3178c6"/>
-    <text x="15" y="0" class="small">TypeScript 4.19%</text>
+    <text x="16" y="0" class="small">TypeScript</text>
+    <text x="150" y="0" class="muted" text-anchor="end">4.1%</text>
   </g>
-  <g transform="translate(175, 110)">
+  <g class="fade" style="animation-delay: 500ms" transform="translate(132, 151)">
     <circle cx="5" cy="-4" r="5" fill="#663399"/>
-    <text x="15" y="0" class="small">CSS 3.58%</text>
+    <text x="16" y="0" class="small">CSS</text>
+    <text x="150" y="0" class="muted" text-anchor="end">3.5%</text>
   </g>
-  <g transform="translate(25, 135)">
+  <g class="fade" style="animation-delay: 600ms" transform="translate(132, 174)">
     <circle cx="5" cy="-4" r="5" fill="#3572A5"/>
-    <text x="15" y="0" class="small">Python 1.97%</text>
+    <text x="16" y="0" class="small">Python</text>
+    <text x="150" y="0" class="muted" text-anchor="end">1.9%</text>
   </g>
-  <g transform="translate(175, 135)">
+  <g class="fade" style="animation-delay: 700ms" transform="translate(132, 197)">
     <circle cx="5" cy="-4" r="5" fill="#e34c26"/>
-    <text x="15" y="0" class="small">HTML 1.46%</text>
+    <text x="16" y="0" class="small">HTML</text>
+    <text x="150" y="0" class="muted" text-anchor="end">1.4%</text>
+  </g>
+  <g class="fade" style="animation-delay: 800ms" transform="translate(132, 220)">
+    <circle cx="5" cy="-4" r="5" fill="#6272a4"/>
+    <text x="16" y="0" class="small">Other</text>
+    <text x="150" y="0" class="muted" text-anchor="end">2.4%</text>
   </g>
 </svg>

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="215" viewBox="0 0 800 215" role="img" aria-label="Contribution Streak">
+  <title>Contribution Streak</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2b2d3a"/>
+      <stop offset="100%" stop-color="#1e1f29"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff79c6"/>
+      <stop offset="100%" stop-color="#bd93f9"/>
+    </linearGradient>
+  </defs>
+  <style>
+    text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Sans-Serif; }
+    .title { font-size: 18px; font-weight: 700; fill: url(#accent); }
+    .subtitle { font-size: 12px; fill: #a3a9c7; }
+    .label { font-size: 14px; font-weight: 600; fill: #f8f8f2; }
+    .value { font-size: 14px; font-weight: 700; fill: #f8f8f2; }
+    .small { font-size: 12px; fill: #f8f8f2; }
+    .muted { font-size: 12px; fill: #a3a9c7; }
+    .big { font-size: 28px; font-weight: 700; fill: #f8f8f2; }
+    .fade { animation: fadeIn 0.6s ease-in-out both; }
+    @keyframes fadeIn { from { opacity: 0; } }
+    @keyframes grow { from { stroke-dashoffset: var(--full); } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+  <rect x="0.5" y="0.5" rx="10" width="799" height="214" fill="url(#bg)" stroke="#44475a"/>
+  <rect x="25" y="47" width="40" height="3" rx="1.5" fill="url(#accent)"/>
+  <text x="25" y="35" class="title">Contribution Streak</text>
+  <text x="775" y="35" class="subtitle" text-anchor="end">days with at least one contribution</text>
+  <g class="fade" style="animation-delay: 150ms" transform="translate(133, 0)">
+    <text y="120" class="big" text-anchor="middle">359</text>
+    <text y="150" class="label" text-anchor="middle">Total Contributions</text>
+    <text y="172" class="muted" text-anchor="middle">Jun 8, 2019 – Present</text></g>
+  <g class="fade" style="animation-delay: 300ms" transform="translate(400, 0)">
+    <circle cy="105" r="40" fill="none" stroke="#3a3c4e" stroke-width="6"/>
+    <circle cy="105" r="40" fill="none" stroke="#ffb86c" stroke-width="6" stroke-linecap="round"
+      transform="rotate(-90 0 105)" stroke-dasharray="251.33" stroke-dashoffset="215.42"
+      style="--full: 251.33; animation: grow 1.2s ease-out forwards"/>
+    <svg x="-8" y="75" width="16" height="16" viewBox="0 0 16 16" fill="#ffb86c"><path d="M9.533.753V.752c.217 2.385 1.463 3.626 2.653 4.81C13.37 6.74 14.498 7.863 14.498 10c0 3.5-3 6-6.5 6S1.5 13.512 1.5 10c0-1.298.536-2.56 1.425-3.286.376-.308.862 0 1.035.454C4.46 8.487 5.581 8.419 6 8c.282-.282.341-.811-.003-1.5C4.34 3.187 7.035.75 8.77.146c.39-.137.726.194.763.607ZM7.998 14.5c2.832 0 5-1.98 5-4.5 0-1.463-.68-2.19-1.879-3.383l-.036-.037c-1.013-1.008-2.3-2.29-2.834-4.434-.322.256-.63.579-.864.953-.432.696-.621 1.58-.046 2.73.473.947.67 2.284-.278 3.232-.61.61-1.545.84-2.403.633a2.79 2.79 0 0 1-1.436-.874A3.198 3.198 0 0 0 3 10c0 2.53 2.164 4.5 4.998 4.5Z"/></svg>
+    <text y="125" class="big" text-anchor="middle" style="fill: #ffb86c">1</text>
+    <text y="172" class="label" text-anchor="middle" style="fill: #ffb86c">Current Streak</text>
+    <text y="192" class="muted" text-anchor="middle">Oct 5, 2026</text></g>
+  <g class="fade" style="animation-delay: 450ms" transform="translate(667, 0)">
+    <text y="120" class="big" text-anchor="middle">7</text>
+    <text y="150" class="label" text-anchor="middle">Longest Streak</text>
+    <text y="172" class="muted" text-anchor="middle">Aug 2 – Aug 8, 2025</text></g>
+  <line x1="267" y1="70" x2="267" y2="190" stroke="#44475a"/>
+  <line x1="533" y1="70" x2="533" y2="190" stroke="#44475a"/>
+</svg>
