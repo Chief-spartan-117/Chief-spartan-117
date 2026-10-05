@@ -3,6 +3,7 @@
 //   top-langs.svg - language breakdown donut
 //   streak.svg    - total contributions and streaks
 //   activity.svg  - last-year contribution heatmap
+//   tech-stack.svg - technologies detected in owned and contributed-to repos
 // No dependencies: runs on Node 20+ with the built-in fetch.
 import { mkdir, writeFile } from "node:fs/promises";
 
@@ -47,14 +48,15 @@ const icons = {
   flame: '<path d="M9.533.753V.752c.217 2.385 1.463 3.626 2.653 4.81C13.37 6.74 14.498 7.863 14.498 10c0 3.5-3 6-6.5 6S1.5 13.512 1.5 10c0-1.298.536-2.56 1.425-3.286.376-.308.862 0 1.035.454C4.46 8.487 5.581 8.419 6 8c.282-.282.341-.811-.003-1.5C4.34 3.187 7.035.75 8.77.146c.39-.137.726.194.763.607ZM7.998 14.5c2.832 0 5-1.98 5-4.5 0-1.463-.68-2.19-1.879-3.383l-.036-.037c-1.013-1.008-2.3-2.29-2.834-4.434-.322.256-.63.579-.864.953-.432.696-.621 1.58-.046 2.73.473.947.67 2.284-.278 3.232-.61.61-1.545.84-2.403.633a2.79 2.79 0 0 1-1.436-.874A3.198 3.198 0 0 0 3 10c0 2.53 2.164 4.5 4.998 4.5Z"/>',
 };
 
-async function gql(query, variables = {}) {
+// With partial: true, data is returned even if some fields failed (e.g. a repo that is gone).
+async function gql(query, variables = {}, { partial = false } = {}) {
   const res = await fetch("https://api.github.com/graphql", {
     method: "POST",
     headers: { Authorization: `bearer ${TOKEN}`, "Content-Type": "application/json" },
     body: JSON.stringify({ query, variables }),
   });
   const json = await res.json();
-  if (!res.ok || json.errors) {
+  if (!res.ok || (json.errors && !(partial && json.data))) {
     throw new Error(`GraphQL error: ${JSON.stringify(json.errors || json)}`);
   }
   return json.data;
@@ -92,6 +94,7 @@ async function fetchStats() {
   let reviews = 0;
   let totalContributions = 0;
   const days = new Map();
+  const contributedRepos = new Set();
   for (const year of user.contributionsCollection.contributionYears) {
     const end = new Date(`${year}-12-31T23:59:59Z`);
     const data = await gql(
@@ -101,6 +104,8 @@ async function fetchStats() {
             totalCommitContributions
             restrictedContributionsCount
             totalPullRequestReviewContributions
+            commitContributionsByRepository(maxRepositories: 100) { repository { nameWithOwner } }
+            pullRequestContributionsByRepository(maxRepositories: 100) { repository { nameWithOwner } }
             ${CALENDAR}
           }
         }
@@ -114,11 +119,15 @@ async function fetchStats() {
     for (const week of c.contributionCalendar.weeks) {
       for (const d of week.contributionDays) days.set(d.date, d.contributionCount);
     }
+    for (const { repository } of [...c.commitContributionsByRepository, ...c.pullRequestContributionsByRepository]) {
+      contributedRepos.add(repository.nameWithOwner);
+    }
   }
 
   // Walk all owned, non-fork repositories for stars and languages.
   let stars = 0;
   const langs = new Map();
+  const ownedRepos = [];
   let cursor = null;
   do {
     const data = await gql(
@@ -127,6 +136,7 @@ async function fetchStats() {
           repositories(ownerAffiliations: OWNER, isFork: false, first: 100, after: $cursor) {
             pageInfo { hasNextPage endCursor }
             nodes {
+              nameWithOwner
               stargazerCount
               languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
                 edges { size node { name color } }
@@ -140,6 +150,7 @@ async function fetchStats() {
     const repos = data.user.repositories;
     for (const repo of repos.nodes) {
       stars += repo.stargazerCount;
+      ownedRepos.push(repo.nameWithOwner);
       for (const { size, node } of repo.languages.edges) {
         if (EXCLUDE_LANGS.includes(node.name.toLowerCase())) continue;
         const prev = langs.get(node.name) || { size: 0, color: node.color || "#858585" };
@@ -169,6 +180,8 @@ async function fetchStats() {
     followers: user.followers.totalCount,
     totalContributions,
     allDays,
+    ownedRepos,
+    contributedRepos: [...contributedRepos],
     lastYear: user.contributionsCollection.contributionCalendar,
     langs: [...langs.entries()]
       .map(([name, v]) => ({ name, ...v }))
@@ -478,15 +491,336 @@ function activityCard(s) {
   });
 }
 
+// ---------------------------------------------------------------------------
+// Tech stack: detected from every repo you own or have committed / opened PRs to.
+
+const DEVICON = "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons";
+// Comma-separated tech ids (keys of TECH below) to always show, e.g. tools that can't be detected.
+const EXTRA_TECH = (process.env.STATS_EXTRA_TECH || "")
+  .split(",")
+  .map((s) => s.trim().toLowerCase())
+  .filter(Boolean);
+// A repo language counts once it makes up at least this share of the repo.
+const MIN_LANG_SHARE = 0.08;
+
+const CATEGORIES = ["Languages", "Frontend", "Backend", "Databases", "Data & ML", "Tools & DevOps"];
+
+// id (devicon name) -> [display name, category, devicon variant]
+const TECH = {
+  html5: ["HTML5", "Languages"],
+  css3: ["CSS3", "Languages"],
+  javascript: ["JavaScript", "Languages"],
+  typescript: ["TypeScript", "Languages"],
+  python: ["Python", "Languages"],
+  java: ["Java", "Languages"],
+  c: ["C", "Languages"],
+  cplusplus: ["C++", "Languages"],
+  csharp: ["C#", "Languages"],
+  go: ["Go", "Languages"],
+  rust: ["Rust", "Languages"],
+  php: ["PHP", "Languages"],
+  ruby: ["Ruby", "Languages"],
+  kotlin: ["Kotlin", "Languages"],
+  swift: ["Swift", "Languages"],
+  dart: ["Dart", "Languages"],
+  r: ["R", "Languages"],
+  lua: ["Lua", "Languages"],
+  bash: ["Shell", "Languages"],
+  sass: ["Sass", "Frontend"],
+  react: ["React", "Frontend"],
+  nextjs: ["Next.js", "Frontend"],
+  vuejs: ["Vue.js", "Frontend"],
+  nuxtjs: ["Nuxt", "Frontend"],
+  svelte: ["Svelte", "Frontend"],
+  angular: ["Angular", "Frontend"],
+  astro: ["Astro", "Frontend"],
+  tailwindcss: ["Tailwind CSS", "Frontend"],
+  bootstrap: ["Bootstrap", "Frontend"],
+  materialui: ["Material UI", "Frontend"],
+  jquery: ["jQuery", "Frontend"],
+  redux: ["Redux", "Frontend"],
+  threejs: ["Three.js", "Frontend"],
+  d3js: ["D3.js", "Frontend"],
+  reactnative: ["React Native", "Frontend"],
+  flutter: ["Flutter", "Frontend"],
+  electron: ["Electron", "Frontend"],
+  nodejs: ["Node.js", "Backend"],
+  express: ["Express", "Backend"],
+  nestjs: ["NestJS", "Backend"],
+  django: ["Django", "Backend", "plain"],
+  flask: ["Flask", "Backend"],
+  fastapi: ["FastAPI", "Backend"],
+  spring: ["Spring", "Backend"],
+  laravel: ["Laravel", "Backend"],
+  dotnetcore: [".NET", "Backend"],
+  graphql: ["GraphQL", "Backend", "plain"],
+  socketio: ["Socket.IO", "Backend"],
+  mongodb: ["MongoDB", "Databases"],
+  postgresql: ["PostgreSQL", "Databases"],
+  mysql: ["MySQL", "Databases"],
+  sqlite: ["SQLite", "Databases"],
+  redis: ["Redis", "Databases"],
+  firebase: ["Firebase", "Databases"],
+  supabase: ["Supabase", "Databases"],
+  prisma: ["Prisma", "Databases"],
+  sequelize: ["Sequelize", "Databases"],
+  sqlalchemy: ["SQLAlchemy", "Databases"],
+  jupyter: ["Jupyter", "Data & ML"],
+  numpy: ["NumPy", "Data & ML"],
+  pandas: ["pandas", "Data & ML"],
+  matplotlib: ["Matplotlib", "Data & ML"],
+  plotly: ["Plotly", "Data & ML"],
+  scikitlearn: ["scikit-learn", "Data & ML"],
+  tensorflow: ["TensorFlow", "Data & ML"],
+  keras: ["Keras", "Data & ML"],
+  pytorch: ["PyTorch", "Data & ML"],
+  opencv: ["OpenCV", "Data & ML"],
+  streamlit: ["Streamlit", "Data & ML"],
+  anaconda: ["Anaconda", "Data & ML"],
+  git: ["Git", "Tools & DevOps"],
+  github: ["GitHub", "Tools & DevOps"],
+  githubactions: ["GitHub Actions", "Tools & DevOps"],
+  docker: ["Docker", "Tools & DevOps"],
+  kubernetes: ["Kubernetes", "Tools & DevOps"],
+  nginx: ["NGINX", "Tools & DevOps"],
+  vercel: ["Vercel", "Tools & DevOps"],
+  vitejs: ["Vite", "Tools & DevOps"],
+  webpack: ["webpack", "Tools & DevOps"],
+  jest: ["Jest", "Tools & DevOps", "plain"],
+  vitest: ["Vitest", "Tools & DevOps"],
+  pytest: ["pytest", "Tools & DevOps"],
+  selenium: ["Selenium", "Tools & DevOps"],
+  eslint: ["ESLint", "Tools & DevOps"],
+  npm: ["npm", "Tools & DevOps"],
+  yarn: ["Yarn", "Tools & DevOps"],
+  pnpm: ["pnpm", "Tools & DevOps"],
+  maven: ["Maven", "Tools & DevOps"],
+  gradle: ["Gradle", "Tools & DevOps"],
+  linux: ["Linux", "Tools & DevOps"],
+  vscode: ["VS Code", "Tools & DevOps"],
+  figma: ["Figma", "Tools & DevOps"],
+};
+
+// GitHub language name -> tech id
+const LANGUAGE_TECH = {
+  HTML: "html5", CSS: "css3", SCSS: "sass", Sass: "sass", JavaScript: "javascript", TypeScript: "typescript",
+  Python: "python", Java: "java", C: "c", "C++": "cplusplus", "C#": "csharp", Go: "go", Rust: "rust",
+  PHP: "php", Ruby: "ruby", Kotlin: "kotlin", Swift: "swift", Dart: "dart", R: "r", Lua: "lua",
+  Shell: "bash", Svelte: "svelte", Vue: "vuejs", Astro: "astro", "Jupyter Notebook": "jupyter", Dockerfile: "docker",
+};
+
+// npm package -> tech id
+const NPM_TECH = {
+  react: "react", next: "nextjs", vue: "vuejs", nuxt: "nuxtjs", svelte: "svelte", "@sveltejs/kit": "svelte",
+  "@angular/core": "angular", astro: "astro", tailwindcss: "tailwindcss", bootstrap: "bootstrap", sass: "sass",
+  "node-sass": "sass", "@mui/material": "materialui", "@material-ui/core": "materialui", jquery: "jquery",
+  redux: "redux", "@reduxjs/toolkit": "redux", three: "threejs", d3: "d3js", "react-native": "reactnative",
+  electron: "electron", express: "express", "@nestjs/core": "nestjs", graphql: "graphql", "socket.io": "socketio",
+  "socket.io-client": "socketio", mongoose: "mongodb", mongodb: "mongodb", pg: "postgresql", mysql: "mysql",
+  mysql2: "mysql", sqlite3: "sqlite", "better-sqlite3": "sqlite", redis: "redis", ioredis: "redis",
+  firebase: "firebase", "firebase-admin": "firebase", "@supabase/supabase-js": "supabase", prisma: "prisma",
+  "@prisma/client": "prisma", sequelize: "sequelize", vite: "vitejs", webpack: "webpack", jest: "jest",
+  vitest: "vitest", eslint: "eslint", typescript: "typescript", "selenium-webdriver": "selenium",
+};
+// npm packages that mean the project runs on a Node.js server.
+const NODE_SERVER = ["express", "@nestjs/core", "fastify", "koa", "mongoose", "socket.io", "pg", "mysql2", "prisma"];
+
+// Python package -> tech id
+const PY_TECH = {
+  django: "django", flask: "flask", fastapi: "fastapi", numpy: "numpy", pandas: "pandas",
+  matplotlib: "matplotlib", plotly: "plotly", "scikit-learn": "scikitlearn", sklearn: "scikitlearn",
+  tensorflow: "tensorflow", keras: "keras", torch: "pytorch", "opencv-python": "opencv",
+  "opencv-python-headless": "opencv", streamlit: "streamlit", sqlalchemy: "sqlalchemy", pytest: "pytest",
+  selenium: "selenium", psycopg2: "postgresql", "psycopg2-binary": "postgresql", pymongo: "mongodb",
+  redis: "redis", "firebase-admin": "firebase", supabase: "supabase", jupyter: "jupyter", notebook: "jupyter",
+};
+
+// Root file name -> tech id
+const FILE_TECH = {
+  Dockerfile: "docker", "docker-compose.yml": "docker", "docker-compose.yaml": "docker", "compose.yaml": "docker",
+  "go.mod": "go", "Cargo.toml": "rust", "pubspec.yaml": "flutter", "pom.xml": "maven", "build.gradle": "gradle",
+  "build.gradle.kts": "gradle", "tailwind.config.js": "tailwindcss", "tailwind.config.ts": "tailwindcss",
+  "tailwind.config.cjs": "tailwindcss", "vite.config.js": "vitejs", "vite.config.ts": "vitejs",
+  "next.config.js": "nextjs", "next.config.mjs": "nextjs", "next.config.ts": "nextjs", "svelte.config.js": "svelte",
+  "angular.json": "angular", "astro.config.mjs": "astro", "nuxt.config.ts": "nuxtjs", "yarn.lock": "yarn",
+  "pnpm-lock.yaml": "pnpm", "package-lock.json": "npm", "manage.py": "django", "environment.yml": "anaconda",
+  "vercel.json": "vercel", "nginx.conf": "nginx", "firebase.json": "firebase", "artisan": "laravel",
+};
+
+// Fetch the facts we need about each repo, 10 repos per GraphQL request.
+async function fetchRepoDetails(names) {
+  const details = [];
+  for (let i = 0; i < names.length; i += 10) {
+    const batch = names.slice(i, i + 10);
+    const fields = batch
+      .map((full, j) => {
+        const [owner, name] = full.split("/");
+        const blob = (alias, path) => `${alias}: object(expression: ${JSON.stringify(`HEAD:${path}`)}) { ... on Blob { text } }`;
+        return `r${j}: repository(owner: ${JSON.stringify(owner)}, name: ${JSON.stringify(name)}) {
+          nameWithOwner
+          languages(first: 20, orderBy: { field: SIZE, direction: DESC }) { totalSize edges { size node { name } } }
+          repositoryTopics(first: 20) { nodes { topic { name } } }
+          root: object(expression: "HEAD:") { ... on Tree { entries { name } } }
+          workflows: object(expression: "HEAD:.github/workflows") { ... on Tree { entries { name } } }
+          ${blob("pkg", "package.json")}
+          ${blob("req", "requirements.txt")}
+          ${blob("pyproject", "pyproject.toml")}
+        }`;
+      })
+      .join("\n");
+    const data = await gql(`query { ${fields} }`, {}, { partial: true });
+    details.push(...Object.values(data).filter(Boolean));
+  }
+  return details;
+}
+
+function detectRepoTech(repo) {
+  const found = new Set();
+  const add = (id) => id && TECH[id] && found.add(id);
+
+  const total = repo.languages.totalSize || 1;
+  for (const { size, node } of repo.languages.edges) {
+    if (size / total >= MIN_LANG_SHARE) add(LANGUAGE_TECH[node.name]);
+  }
+  for (const { topic } of repo.repositoryTopics.nodes) {
+    const t = topic.name.toLowerCase().replace(/[^a-z0-9]/g, "");
+    add(TECH[t] ? t : NPM_TECH[topic.name] || PY_TECH[topic.name]);
+  }
+  for (const { name } of repo.root?.entries || []) add(FILE_TECH[name]);
+  if (repo.workflows?.entries?.length) add("githubactions");
+
+  if (repo.pkg?.text) {
+    try {
+      const pkg = JSON.parse(repo.pkg.text);
+      const deps = Object.keys({ ...pkg.dependencies, ...pkg.devDependencies });
+      for (const d of deps) add(NPM_TECH[d]);
+      if (deps.some((d) => NODE_SERVER.includes(d))) add("nodejs");
+    } catch {
+      // Not valid JSON; skip it.
+    }
+  }
+  const pyText = `${repo.req?.text || ""}\n${repo.pyproject?.text || ""}`.toLowerCase();
+  if (pyText.trim()) {
+    for (const [pkg, id] of Object.entries(PY_TECH)) {
+      const escaped = pkg.replace(/[.*+?^${}()|[\]\\-]/g, "\\$&");
+      if (new RegExp(`(^|[\\s"'\\[,])${escaped}(?=$|[\\s"'<>=!~;\\[,])`, "m").test(pyText)) add(id);
+    }
+  }
+  return found;
+}
+
+async function detectTechStack(stats) {
+  const names = [...new Set([...stats.ownedRepos, ...stats.contributedRepos])];
+  const repos = await fetchRepoDetails(names);
+  const counts = new Map();
+  for (const repo of repos) {
+    for (const id of detectRepoTech(repo)) counts.set(id, (counts.get(id) || 0) + 1);
+  }
+  for (const id of EXTRA_TECH) {
+    if (!TECH[id]) console.warn(`STATS_EXTRA_TECH: unknown tech "${id}", skipping`);
+    else if (!counts.has(id)) counts.set(id, 0);
+  }
+  const contributedOnly = repos.filter((r) => !stats.ownedRepos.includes(r.nameWithOwner)).length;
+  return { counts, repoCount: repos.length, contributedOnly };
+}
+
+// Icons are embedded as data URIs, since images inside an <img>-loaded SVG can't load external files.
+// Each sits on a light disc so dark logos (Express, Next.js, ...) stay visible on the dark card.
+async function loadIcon(id) {
+  const variant = TECH[id][2] || "original";
+  try {
+    const res = await fetch(`${DEVICON}/${id}/${id}-${variant}.svg`);
+    if (!res.ok) return null;
+    const svg = (await res.text()).replace(/<!--[\s\S]*?-->/g, "").replace(/\s+/g, " ").trim();
+    return `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`;
+  } catch {
+    return null;
+  }
+}
+
+async function techStackCard({ counts, repoCount, contributedOnly }) {
+  const width = 800;
+  const chipH = 30;
+  const gap = 8;
+  const left = 160;
+  const right = width - 25;
+  const textWidth = (str, size) => [...str].reduce((w, ch) => w + (/[A-Z]/.test(ch) ? 0.66 : /[a-z0-9]/.test(ch) ? 0.52 : 0.38) * size, 0);
+
+  const icons = new Map(await Promise.all([...counts.keys()].map(async (id) => [id, await loadIcon(id)])));
+
+  let y = 72;
+  const sections = [];
+  for (const category of CATEGORIES) {
+    const items = [...counts.entries()]
+      .filter(([id]) => TECH[id][1] === category)
+      .sort((a, b) => b[1] - a[1] || TECH[a[0]][0].localeCompare(TECH[b[0]][0]));
+    if (!items.length) continue;
+
+    const labelY = y + 19.5;
+    let x = left;
+    const chips = [];
+    for (const [id, count] of items) {
+      const name = TECH[id][0];
+      const badge = count > 0 ? String(count) : "";
+      const badgeW = badge ? textWidth(badge, 10) + 10 : 0;
+      const w = Math.round(8 + 22 + 7 + textWidth(name, 12) + (badge ? 7 + badgeW : 0) + 10);
+      if (x + w > right && x > left) {
+        x = left;
+        y += chipH + gap;
+      }
+      const icon = icons.get(id);
+      const iconSvg = icon
+        ? `<circle cx="19" cy="15" r="11" fill="${theme.text}"/><image x="11.5" y="7.5" width="15" height="15" href="${icon}"/>`
+        : `<circle cx="19" cy="15" r="9" fill="${theme.title2}"/><text x="19" y="19" text-anchor="middle" style="font-size: 11px; font-weight: 700; fill: ${theme.bg2}">${esc(name[0])}</text>`;
+      const tip = count > 0 ? `${name}: used in ${count} repo${count === 1 ? "" : "s"}` : name;
+      chips.push(`    <g transform="translate(${x}, ${y})"><title>${esc(tip)}</title>
+      <rect width="${w}" height="${chipH}" rx="15" fill="#ffffff" fill-opacity="0.05" stroke="${theme.border}"/>
+      ${iconSvg}
+      <text x="37" y="19.5" class="small">${esc(name)}</text>${
+        badge
+          ? `
+      <rect x="${(w - 10 - badgeW).toFixed(1)}" y="8" width="${badgeW.toFixed(1)}" height="14" rx="7" fill="url(#accent)"/>
+      <text x="${(w - 10 - badgeW / 2).toFixed(1)}" y="18.5" text-anchor="middle" style="font-size: 10px; font-weight: 700; fill: ${theme.bg2}">${badge}</text>`
+          : ""
+      }
+    </g>`);
+      x += w + gap;
+    }
+    sections.push(`  <g class="fade" style="animation-delay: ${100 + sections.length * 120}ms">
+    <text x="25" y="${labelY}" class="label" style="fill: ${theme.muted}">${esc(category)}</text>
+${chips.join("\n")}
+  </g>`);
+    y += chipH + 16;
+  }
+  if (!sections.length) {
+    sections.push(`  <text x="25" y="90" class="small">No technologies detected yet</text>`);
+    y += 40;
+  }
+
+  const note = `Scanned ${repoCount} repos (${contributedOnly} of them owned by others) · badge = number of repos using it`;
+  return card({
+    width,
+    height: y + 30,
+    title: "Tech Stack",
+    subtitle: "auto-detected from my projects & contributions",
+    body: `${sections.join("\n")}\n  <text x="25" y="${y + 10}" class="muted" style="font-size: 11px">${esc(note)}</text>`,
+  });
+}
+
 const stats = await fetchStats();
 await mkdir(OUT_DIR, { recursive: true });
 await writeFile(`${OUT_DIR}/stats.svg`, statsCard(stats));
 await writeFile(`${OUT_DIR}/top-langs.svg`, langsCard(stats.langs));
 await writeFile(`${OUT_DIR}/streak.svg`, streakCard(stats));
 await writeFile(`${OUT_DIR}/activity.svg`, activityCard(stats));
+const tech = await detectTechStack(stats);
+await writeFile(`${OUT_DIR}/tech-stack.svg`, await techStackCard(tech));
 console.log(`Generated cards for ${USERNAME}:`, {
   ...stats,
   allDays: stats.allDays.length,
   lastYear: stats.lastYear.totalContributions,
   langs: stats.langs.length,
+  ownedRepos: stats.ownedRepos.length,
+  contributedRepos: stats.contributedRepos.length,
+  tech: Object.fromEntries(tech.counts),
 });
