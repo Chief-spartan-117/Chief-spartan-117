@@ -1,13 +1,9 @@
-<h2 align="center">Hi 👋! My name is Sagar Shrestha and I'm a Rookie Learner</h2>
+<h1 align="center">Hi 👋! My name is Sagar Shrestha</h1>
+<h3 align="center">and I'm a Rookie Learner</h3>
 
-###
+<br />
 
-<div align="center">
-  <img src="./profile/stats.svg" alt="GitHub stats" />
-  <img src="./profile/top-langs.svg" alt="Most used languages" />
-</div>
-
-###
+## 🛠️ Tech Stack
 
 <div align="center">
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" height="30" alt="html5 logo"  />
@@ -29,4 +25,21 @@
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg" height="30" alt="sass logo"  />
 </div>
 
-###
+<br />
+
+## 📊 GitHub Stats
+
+<div align="center">
+  <img src="./profile/stats.svg" alt="GitHub stats" />
+  <img src="./profile/top-langs.svg" alt="Most used languages" />
+</div>
+
+<div align="center">
+  <img src="./profile/streak.svg" alt="Contribution streak" />
+</div>
+
+<div align="center">
+  <img src="./profile/activity.svg" alt="Contribution activity over the last year" />
+</div>
+
+<p align="center"><sub>Cards are generated daily by this repo's own GitHub Action — no third-party stats service.</sub></p>

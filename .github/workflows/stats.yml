@@ -33,6 +33,8 @@ jobs:
           # to include private repos/contributions. Falls back to the built-in token.
           GH_TOKEN: ${{ secrets.STATS_TOKEN || secrets.GITHUB_TOKEN }}
           STATS_USERNAME: ${{ github.repository_owner }}
+          # Optional: hide languages from the languages card, e.g. "Jupyter Notebook,HTML".
+          STATS_EXCLUDE_LANGS: ""
         run: node .github/scripts/generate-stats.mjs
 
       - name: Commit cards
