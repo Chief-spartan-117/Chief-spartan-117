@@ -10,26 +10,26 @@
   <g transform="translate(25, 70)">
     <circle cx="5" cy="-5" r="5" fill="#79dafa"/>
     <text x="20" y="0" class="label">Total Stars Earned:</text>
-    <text x="300" y="0" class="value" text-anchor="end">0</text>
+    <text x="300" y="0" class="value" text-anchor="end">3</text>
   </g>
   <g transform="translate(25, 95)">
     <circle cx="5" cy="-5" r="5" fill="#79dafa"/>
     <text x="20" y="0" class="label">Total Commits:</text>
-    <text x="300" y="0" class="value" text-anchor="end">0</text>
+    <text x="300" y="0" class="value" text-anchor="end">302</text>
   </g>
   <g transform="translate(25, 120)">
     <circle cx="5" cy="-5" r="5" fill="#79dafa"/>
     <text x="20" y="0" class="label">Total PRs:</text>
-    <text x="300" y="0" class="value" text-anchor="end">0</text>
+    <text x="300" y="0" class="value" text-anchor="end">27</text>
   </g>
   <g transform="translate(25, 145)">
     <circle cx="5" cy="-5" r="5" fill="#79dafa"/>
     <text x="20" y="0" class="label">Total Issues:</text>
-    <text x="300" y="0" class="value" text-anchor="end">0</text>
+    <text x="300" y="0" class="value" text-anchor="end">1</text>
   </g>
   <g transform="translate(25, 170)">
     <circle cx="5" cy="-5" r="5" fill="#79dafa"/>
     <text x="20" y="0" class="label">Followers:</text>
-    <text x="300" y="0" class="value" text-anchor="end">3</text>
+    <text x="300" y="0" class="value" text-anchor="end">13</text>
   </g>
 </svg>
