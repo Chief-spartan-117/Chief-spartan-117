@@ -36,12 +36,12 @@
   <g class="fade" style="animation-delay: 250ms" transform="translate(25, 94)">
     <svg x="0" y="-12" width="16" height="16" viewBox="0 0 16 16" fill="#8be9fd"><path d="M11.93 8.5a4.002 4.002 0 0 1-7.86 0H.75a.75.75 0 0 1 0-1.5h3.32a4.002 4.002 0 0 1 7.86 0h3.32a.75.75 0 0 1 0 1.5Zm-1.43-.75a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z"/></svg>
     <text x="26" y="0" class="label">Total Commits:</text>
-    <text x="290" y="0" class="value" text-anchor="end">306</text>
+    <text x="290" y="0" class="value" text-anchor="end">316</text>
   </g>
   <g class="fade" style="animation-delay: 350ms" transform="translate(25, 116)">
     <svg x="0" y="-12" width="16" height="16" viewBox="0 0 16 16" fill="#8be9fd"><path d="M1.5 3.25a2.25 2.25 0 1 1 3 2.122v5.256a2.251 2.251 0 1 1-1.5 0V5.372A2.25 2.25 0 0 1 1.5 3.25Zm5.677-.177L9.573.677A.25.25 0 0 1 10 .854V2.5h1A2.5 2.5 0 0 1 13.5 5v5.628a2.251 2.251 0 1 1-1.5 0V5a1 1 0 0 0-1-1h-1v1.646a.25.25 0 0 1-.427.177L7.177 3.427a.25.25 0 0 1 0-.354ZM3.75 2.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm0 9.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm8.25.75a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0Z"/></svg>
     <text x="26" y="0" class="label">Total Pull Requests:</text>
-    <text x="290" y="0" class="value" text-anchor="end">30</text>
+    <text x="290" y="0" class="value" text-anchor="end">35</text>
   </g>
   <g class="fade" style="animation-delay: 450ms" transform="translate(25, 138)">
     <svg x="0" y="-12" width="16" height="16" viewBox="0 0 16 16" fill="#8be9fd"><path d="M1.75 1h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 13H8.061l-2.574 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25v-8.5C0 1.784.784 1 1.75 1ZM1.5 2.75v8.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-8.5a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25Zm5.28 1.72a.75.75 0 0 1 0 1.06L5.31 7l1.47 1.47a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-2-2a.75.75 0 0 1 0-1.06l2-2a.75.75 0 0 1 1.06 0Zm2.44 0a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L10.69 7 9.22 5.53a.75.75 0 0 1 0-1.06Z"/></svg>
@@ -71,9 +71,9 @@
   <g transform="translate(400, 130)">
     <circle r="46" fill="none" stroke="#3a3c4e" stroke-width="7"/>
     <circle r="46" fill="none" stroke="url(#accent)" stroke-width="7" stroke-linecap="round"
-      transform="rotate(-90)" stroke-dasharray="289.03" stroke-dashoffset="235.51"
+      transform="rotate(-90)" stroke-dasharray="289.03" stroke-dashoffset="232.05"
       style="--full: 289.03; animation: grow 1.2s ease-out forwards"/>
     <text y="10" class="big" text-anchor="middle">C+</text>
-    <text y="76" class="muted" text-anchor="middle">Top 81% · Rank</text>
+    <text y="76" class="muted" text-anchor="middle">Top 80% · Rank</text>
   </g>
 </svg>
