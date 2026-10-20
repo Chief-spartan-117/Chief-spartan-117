@@ -30,57 +30,57 @@
   
   <g class="fade" transform="translate(70, 145)">
     <g transform="rotate(-90)">
+    <circle r="42" fill="none" stroke="#dea584" stroke-width="14"
+      stroke-dasharray="142.10 121.79" stroke-dashoffset="0.00"/>
     <circle r="42" fill="none" stroke="#DA5B0B" stroke-width="14"
-      stroke-dasharray="215.22 48.67" stroke-dashoffset="0.00"/>
+      stroke-dasharray="91.99 171.91" stroke-dashoffset="-142.10"/>
     <circle r="42" fill="none" stroke="#f1e05a" stroke-width="14"
-      stroke-dasharray="13.40 250.49" stroke-dashoffset="-215.22"/>
+      stroke-dasharray="13.17 250.73" stroke-dashoffset="-234.09"/>
     <circle r="42" fill="none" stroke="#3178c6" stroke-width="14"
-      stroke-dasharray="10.78 253.11" stroke-dashoffset="-228.63"/>
+      stroke-dasharray="4.61 259.29" stroke-dashoffset="-247.26"/>
     <circle r="42" fill="none" stroke="#663399" stroke-width="14"
-      stroke-dasharray="9.21 254.69" stroke-dashoffset="-239.41"/>
+      stroke-dasharray="3.94 259.96" stroke-dashoffset="-251.87"/>
     <circle r="42" fill="none" stroke="#3572A5" stroke-width="14"
-      stroke-dasharray="5.08 258.81" stroke-dashoffset="-248.61"/>
-    <circle r="42" fill="none" stroke="#e34c26" stroke-width="14"
-      stroke-dasharray="3.77 260.12" stroke-dashoffset="-253.69"/>
+      stroke-dasharray="3.13 260.77" stroke-dashoffset="-255.80"/>
     <circle r="42" fill="none" stroke="#6272a4" stroke-width="14"
-      stroke-dasharray="6.43 257.46" stroke-dashoffset="-257.46"/>
+      stroke-dasharray="4.96 258.93" stroke-dashoffset="-258.93"/>
     </g>
-    <text y="4" class="value" text-anchor="middle" style="font-size: 20px">11</text>
+    <text y="4" class="value" text-anchor="middle" style="font-size: 20px">15</text>
     <text y="20" class="muted" text-anchor="middle" style="font-size: 10px">languages</text>
   </g>
   <g class="fade" style="animation-delay: 200ms" transform="translate(132, 82)">
-    <circle cx="5" cy="-4" r="5" fill="#DA5B0B"/>
-    <text x="16" y="0" class="small">Jupyter Notebook</text>
-    <text x="150" y="0" class="muted" text-anchor="end">82%</text>
+    <circle cx="5" cy="-4" r="5" fill="#dea584"/>
+    <text x="16" y="0" class="small">Rust</text>
+    <text x="150" y="0" class="muted" text-anchor="end">54%</text>
   </g>
   <g class="fade" style="animation-delay: 300ms" transform="translate(132, 105)">
-    <circle cx="5" cy="-4" r="5" fill="#f1e05a"/>
-    <text x="16" y="0" class="small">JavaScript</text>
-    <text x="150" y="0" class="muted" text-anchor="end">5.1%</text>
+    <circle cx="5" cy="-4" r="5" fill="#DA5B0B"/>
+    <text x="16" y="0" class="small">Jupyter Notebook</text>
+    <text x="150" y="0" class="muted" text-anchor="end">35%</text>
   </g>
   <g class="fade" style="animation-delay: 400ms" transform="translate(132, 128)">
-    <circle cx="5" cy="-4" r="5" fill="#3178c6"/>
-    <text x="16" y="0" class="small">TypeScript</text>
-    <text x="150" y="0" class="muted" text-anchor="end">4.1%</text>
+    <circle cx="5" cy="-4" r="5" fill="#f1e05a"/>
+    <text x="16" y="0" class="small">JavaScript</text>
+    <text x="150" y="0" class="muted" text-anchor="end">5.0%</text>
   </g>
   <g class="fade" style="animation-delay: 500ms" transform="translate(132, 151)">
-    <circle cx="5" cy="-4" r="5" fill="#663399"/>
-    <text x="16" y="0" class="small">CSS</text>
-    <text x="150" y="0" class="muted" text-anchor="end">3.5%</text>
+    <circle cx="5" cy="-4" r="5" fill="#3178c6"/>
+    <text x="16" y="0" class="small">TypeScript</text>
+    <text x="150" y="0" class="muted" text-anchor="end">1.7%</text>
   </g>
   <g class="fade" style="animation-delay: 600ms" transform="translate(132, 174)">
-    <circle cx="5" cy="-4" r="5" fill="#3572A5"/>
-    <text x="16" y="0" class="small">Python</text>
-    <text x="150" y="0" class="muted" text-anchor="end">1.9%</text>
+    <circle cx="5" cy="-4" r="5" fill="#663399"/>
+    <text x="16" y="0" class="small">CSS</text>
+    <text x="150" y="0" class="muted" text-anchor="end">1.5%</text>
   </g>
   <g class="fade" style="animation-delay: 700ms" transform="translate(132, 197)">
-    <circle cx="5" cy="-4" r="5" fill="#e34c26"/>
-    <text x="16" y="0" class="small">HTML</text>
-    <text x="150" y="0" class="muted" text-anchor="end">1.4%</text>
+    <circle cx="5" cy="-4" r="5" fill="#3572A5"/>
+    <text x="16" y="0" class="small">Python</text>
+    <text x="150" y="0" class="muted" text-anchor="end">1.2%</text>
   </g>
   <g class="fade" style="animation-delay: 800ms" transform="translate(132, 220)">
     <circle cx="5" cy="-4" r="5" fill="#6272a4"/>
     <text x="16" y="0" class="small">Other</text>
-    <text x="150" y="0" class="muted" text-anchor="end">2.4%</text>
+    <text x="150" y="0" class="muted" text-anchor="end">1.9%</text>
   </g>
 </svg>
