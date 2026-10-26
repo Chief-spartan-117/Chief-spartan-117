@@ -31,19 +31,19 @@
   <g class="fade" transform="translate(70, 145)">
     <g transform="rotate(-90)">
     <circle r="42" fill="none" stroke="#dea584" stroke-width="14"
-      stroke-dasharray="135.76 128.14" stroke-dashoffset="0.00"/>
+      stroke-dasharray="136.30 127.60" stroke-dashoffset="0.00"/>
     <circle r="42" fill="none" stroke="#DA5B0B" stroke-width="14"
-      stroke-dasharray="87.88 176.01" stroke-dashoffset="-135.76"/>
+      stroke-dasharray="87.40 176.49" stroke-dashoffset="-136.30"/>
     <circle r="42" fill="none" stroke="#f1e05a" stroke-width="14"
-      stroke-dasharray="12.75 251.15" stroke-dashoffset="-223.64"/>
+      stroke-dasharray="12.68 251.21" stroke-dashoffset="-223.70"/>
     <circle r="42" fill="none" stroke="#00ADD8" stroke-width="14"
-      stroke-dasharray="11.47 252.42" stroke-dashoffset="-236.39"/>
+      stroke-dasharray="11.41 252.48" stroke-dashoffset="-236.38"/>
     <circle r="42" fill="none" stroke="#3178c6" stroke-width="14"
-      stroke-dasharray="4.40 259.49" stroke-dashoffset="-247.86"/>
+      stroke-dasharray="4.38 259.52" stroke-dashoffset="-247.79"/>
     <circle r="42" fill="none" stroke="#663399" stroke-width="14"
-      stroke-dasharray="3.76 260.13" stroke-dashoffset="-252.26"/>
+      stroke-dasharray="3.74 260.15" stroke-dashoffset="-252.16"/>
     <circle r="42" fill="none" stroke="#6272a4" stroke-width="14"
-      stroke-dasharray="7.87 256.02" stroke-dashoffset="-256.02"/>
+      stroke-dasharray="7.99 255.90" stroke-dashoffset="-255.90"/>
     </g>
     <text y="4" class="value" text-anchor="middle" style="font-size: 20px">16</text>
     <text y="20" class="muted" text-anchor="middle" style="font-size: 10px">languages</text>
@@ -51,7 +51,7 @@
   <g class="fade" style="animation-delay: 200ms" transform="translate(132, 82)">
     <circle cx="5" cy="-4" r="5" fill="#dea584"/>
     <text x="16" y="0" class="small">Rust</text>
-    <text x="150" y="0" class="muted" text-anchor="end">51%</text>
+    <text x="150" y="0" class="muted" text-anchor="end">52%</text>
   </g>
   <g class="fade" style="animation-delay: 300ms" transform="translate(132, 105)">
     <circle cx="5" cy="-4" r="5" fill="#DA5B0B"/>
