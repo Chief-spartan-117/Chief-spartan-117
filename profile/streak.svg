@@ -29,7 +29,7 @@
   <text x="25" y="35" class="title">Contribution Streak</text>
   <text x="775" y="35" class="subtitle" text-anchor="end">days with at least one contribution</text>
   <g class="fade" style="animation-delay: 150ms" transform="translate(133, 0)">
-    <text y="120" class="big" text-anchor="middle">507</text>
+    <text y="120" class="big" text-anchor="middle">499</text>
     <text y="150" class="label" text-anchor="middle">Total Contributions</text>
     <text y="172" class="muted" text-anchor="middle">Jun 8, 2019 – Present</text></g>
   <g class="fade" style="animation-delay: 300ms" transform="translate(400, 0)">
@@ -42,9 +42,9 @@
     <text y="172" class="label" text-anchor="middle" style="fill: #ffb86c">Current Streak</text>
     <text y="192" class="muted" text-anchor="middle">No streak yet</text></g>
   <g class="fade" style="animation-delay: 450ms" transform="translate(667, 0)">
-    <text y="120" class="big" text-anchor="middle">7</text>
+    <text y="120" class="big" text-anchor="middle">6</text>
     <text y="150" class="label" text-anchor="middle">Longest Streak</text>
-    <text y="172" class="muted" text-anchor="middle">Aug 2 – Aug 8, 2025</text></g>
+    <text y="172" class="muted" text-anchor="middle">Jul 2 – Jul 7, 2024</text></g>
   <line x1="267" y1="70" x2="267" y2="190" stroke="#44475a"/>
   <line x1="533" y1="70" x2="533" y2="190" stroke="#44475a"/>
 </svg>
